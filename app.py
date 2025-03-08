@@ -11,6 +11,11 @@ default_file = "Intelligent_Sourcing.xlsx"
 # Dictionary to store sheet data
 df_sheets = {}
 
+# Function to read the Markdown file
+def read_markdown_file():
+    with open("app_doc.md", "r", encoding="utf-8") as f:
+        return f.read()
+
 # Function to load the default Excel file
 def load_default_file():
     global df_sheets
@@ -120,7 +125,12 @@ def run_optimization():
 
 # Gradio UI
 with gr.Blocks() as app:
+    gr.Markdown("""# Intelligent Sourcing """)
     with gr.Tabs():
+        
+        with gr.TabItem("📖 About This App"):
+            gr.Markdown(read_markdown_file())
+
         with gr.TabItem("Run Optimization"):
             gr.Markdown("""### Run Optimization\nAdjust weightage parameters and run optimization.""")
             run_weightage_Cost = gr.Slider(label="Weightage Cost", minimum=1, maximum=10, value=1)
