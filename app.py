@@ -124,7 +124,7 @@ def run_optimization():
 
 
 # Gradio UI
-with gr.Blocks() as app:
+with gr.Blocks(theme=gr.themes.Soft()) as app:
     gr.Markdown("""# Intelligent Sourcing """)
     with gr.Tabs():
         
@@ -133,10 +133,10 @@ with gr.Blocks() as app:
 
         with gr.TabItem("Run Optimization"):
             gr.Markdown("""### Run Optimization\nAdjust weightage parameters and run optimization.""")
-            run_weightage_Cost = gr.Slider(label="Weightage Cost", minimum=1, maximum=10, value=1)
-            run_weightage_Priority = gr.Slider(label="Weightage Priority", minimum=1, maximum=10, value=0.8)
-            run_weightage_distance = gr.Slider(label="Weightage Distance", minimum=1, maximum=10, value=0.6)
-            run_weightage_days = gr.Slider(label="Weightage Days", minimum=1, maximum=10, value=0.4)
+            run_weightage_Cost = gr.Slider(label="Weightage Cost", minimum=1, maximum=10, value=5)
+            run_weightage_Priority = gr.Slider(label="Weightage Priority", minimum=1, maximum=10, value=5)
+            run_weightage_distance = gr.Slider(label="Weightage Distance", minimum=1, maximum=10, value=5)
+            run_weightage_days = gr.Slider(label="Weightage Days", minimum=1, maximum=10, value=5)
             save_Weightage_button = gr.Button("Save Weightage")
             weightage_message_output = gr.Textbox(label="Status", interactive=False)
             run_optimization_button = gr.Button("Run Optimization")
@@ -176,16 +176,16 @@ with gr.Blocks() as app:
             num_of_warehouses = gr.Textbox(label="Number of Warehouses", value="4")
             num_of_products = gr.Textbox(label="Number of Products", value="10")
             num_of_orders = gr.Textbox(label="Number of Orders", value="2")
-            weightage_Cost = gr.Slider(label="Weightage Cost", minimum=1, maximum=10, value=1)
-            weightage_Priority = gr.Slider(label="Weightage Priority", minimum=1, maximum=10, value=0.8)
-            weightage_distance = gr.Slider(label="Weightage Distance", minimum=1, maximum=10, value=0.6)
-            weightage_days = gr.Slider(label="Weightage Days", minimum=1, maximum=10, value=0.4)
+            weightage_Cost = gr.Slider(label="Weightage Cost", minimum=1, maximum=10, value=5)
+            weightage_Priority = gr.Slider(label="Weightage Priority", minimum=1, maximum=10, value=5)
+            weightage_distance = gr.Slider(label="Weightage Distance", minimum=1, maximum=10, value=5)
+            weightage_days = gr.Slider(label="Weightage Days", minimum=1, maximum=10, value=5)
             range_priority = gr.Textbox(label="Range Priority", value="(1, 10)")
             range_prod_stock = gr.Textbox(label="Range Product Stock", value="(1, 100)")
             range_order = gr.Textbox(label="Range Order", value="(1, 10)")
-            range_cost = gr.Textbox(label="Range Cost", value="(1, 300)")
-            range_distance = gr.Textbox(label="Range Distance", value="(1, 200)")
-            range_days = gr.Textbox(label="Range Days", value="(1, 7)")
+            range_cost = gr.Textbox(label="Range Cost", value="(1, 500)")
+            range_distance = gr.Textbox(label="Range Distance", value="(1, 300)")
+            range_days = gr.Textbox(label="Range Days", value="(1, 14)")
 
             # Button Bindings
             generate_button.click(generate_data, 
