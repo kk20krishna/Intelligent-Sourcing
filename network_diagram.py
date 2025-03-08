@@ -15,6 +15,8 @@ def create_sourcing_graph(fulfillment_solution):
     warehouses = set(w for w, _, _, _ in fulfillment_solution)
     orders = set(o for _, _, o, _ in fulfillment_solution)
 
+    print(orders)
+
     # Add nodes to graph
     G.add_nodes_from(warehouses, color='blue')  # Warehouses
     G.add_nodes_from(orders, color='red')  # Orders
