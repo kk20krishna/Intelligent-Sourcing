@@ -1,0 +1,6 @@
+gradio==5.20.1
+matplotlib==3.10.1
+numpy==2.2.3
+pandas==2.2.3
+PuLP==3.0.2
+XlsxWriter==3.2.2
