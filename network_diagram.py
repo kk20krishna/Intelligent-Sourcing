@@ -15,8 +15,8 @@ def create_sourcing_graph(fulfillment_solution):
     warehouses = fulfillment_solution["Warehouse"].unique()
     orders = fulfillment_solution["Order"].unique()
     
-    # Add nodes for warehouses (blue) and orders (red)
-    G.add_nodes_from(warehouses, color='blue')  # Warehouses
+    # Add nodes for warehouses (green) and orders (red)
+    G.add_nodes_from(warehouses, color='green')  # Warehouses
     G.add_nodes_from(orders, color='red')  # Orders
 
     # Group shipments by (warehouse, order) and store product & quantity information
@@ -27,7 +27,7 @@ def create_sourcing_graph(fulfillment_solution):
         o = row["Order"]
         p = row["Product"]
         q = row["Supply Quantity"]
-        shipment_info[(w, o)].append(f"{p[7:]} ({int(q)})")
+        shipment_info[(w, o)].append(f"{p} ({int(q)})")
     
     # Add edges and calculate edge properties (width and color)
     edge_labels = {}
@@ -45,20 +45,24 @@ def create_sourcing_graph(fulfillment_solution):
     
     # Positioning the nodes using spectral layout
     #pos = nx.spectral_layout(G)
-    pos = nx.circular_layout(G)
-    #pos = nx.spring_layout(G, k=200, scale=40) 
+    #pos = nx.circular_layout(G)
+    pos = nx.spring_layout(G, k=400, scale=100, iterations=200)
 
     # Assign node colors based on type (warehouse or order)
-    node_colors = ["blue" if node in warehouses else "red" for node in G.nodes]
+    node_colors = ["green" if node in warehouses else "red" for node in G.nodes]
     
+    # Calculate dynamic figure size based on the number of nodes
+    num_nodes = len(G.nodes)
+    side = num_nodes * 1.5
+
     # Draw the network with labels, node colors, edge widths, and labels
-    plt.figure(figsize=(8, 6))
+    plt.figure(figsize=(side, side))
     nx.draw(G, pos, with_labels=True, node_color=node_colors, edge_color=edge_colors, 
             node_size=2000, font_size=10, width=edge_widths, arrows=True)
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=8, label_pos=0.5)
     
     # Add a legend for clarity
-    warehouse_patch = mpatches.Patch(color="blue", label="Warehouse")
+    warehouse_patch = mpatches.Patch(color="green", label="Warehouse")
     order_patch = mpatches.Patch(color="red", label="Order")
     plt.legend(handles=[warehouse_patch, order_patch], loc="upper right")
     
