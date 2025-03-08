@@ -84,7 +84,7 @@ def generate_intelligent_sourcing_excel(
     with pd.ExcelWriter(output_filename, engine='xlsxwriter') as writer:
         weightage_df.to_excel(writer, sheet_name='Weightage', index=False)
         priority_df.to_excel(writer, sheet_name='Priority Data', index=False)
-        warehouse_df.to_excel(writer, sheet_name='Stock Data', index=False)
+        warehouse_df.to_excel(writer, sheet_name='Warehouse Data', index=False)
         order_df.to_excel(writer, sheet_name='Order Data', index=False)
         cost_df.to_excel(writer, sheet_name='Cost Data', index=False)
         distance_df.to_excel(writer, sheet_name='Distance Data', index=False)
@@ -102,7 +102,7 @@ def plot_histograms(excel_filename):
     
     data_sheets = {
         "Priority": pd.read_excel(xls, "Priority Data")["Priority"],
-        "Product Stock": pd.read_excel(xls, "Stock Data").iloc[:, 1:].values.flatten(),
+        "Product Stock": pd.read_excel(xls, "Warehouse Data").iloc[:, 1:].values.flatten(),
         "Order Quantity": pd.read_excel(xls, "Order Data").iloc[:, 1:].values.flatten(),
         "Cost": pd.read_excel(xls, "Cost Data")["Cost"],
         "Distance": pd.read_excel(xls, "Distance Data")["Distance"],
@@ -128,9 +128,9 @@ def plot_histograms(excel_filename):
 if __name__ == "__main__":
     # Define parameters for execution
     output_filename = "Intelligent_Sourcing.xlsx"
-    num_of_warehouses = 10
-    num_of_products = 100
-    num_of_orders = 200
+    num_of_warehouses = 4
+    num_of_products = 10
+    num_of_orders = 2
     weightage_Cost = 1
     weightage_Priority = 0.8
     weightage_distance = 0.6
