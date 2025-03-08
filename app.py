@@ -4,6 +4,8 @@ from generate_data import generate_intelligent_sourcing_excel
 from read_data import load_excel_data
 from create_optimization_problem import create_sourcing_problem
 from solve_optimization_problem import solve_sourcing_problem
+from network_diagram import create_sourcing_graph, display_gallery
+import os
 
 # Default file name
 default_file = "Intelligent_Sourcing.xlsx"
@@ -117,11 +119,15 @@ def run_optimization():
 
         # Close the Pandas Excel writer and output the Excel file.
         writer.close()
+        create_sourcing_graph(fulfillment_solution)
         return f'Optimization Status: {status}', fulfillment_solution, warehouse_stock_status
     else:
         return f'Solution not found!!!! - status is - {status}', gr.update(visible=False), gr.update(visible=False)
 
-
+def display_gallery():
+    # Get all image files in the 'plots' folder
+    plot_images = [os.path.join("plots", filename) for filename in os.listdir("plots") if filename.endswith(('.png', '.jpg', '.jpeg'))]
+    return plot_images
 
 # Gradio UI
 with gr.Blocks(theme=gr.themes.Soft()) as app:
@@ -146,6 +152,9 @@ with gr.Blocks(theme=gr.themes.Soft()) as app:
                     fulfillment_dataframe = gr.Dataframe(label="Fulfillment Solution")
                 with gr.TabItem("Results: Warehouse Stock Status"):
                     warehouse_stock_dataframe = gr.Dataframe(label="Warehouse Stock Status")
+                with gr.TabItem("Results: Plots"):
+                    create_plots_button = gr.Button("Create Plots")
+                    gallery_output = gr.Gallery()
 
             # Button bindings
             run_optimization_button.click(run_optimization, inputs=[], 
@@ -156,7 +165,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as app:
                                         inputs=[run_weightage_Cost, run_weightage_Priority, 
                                                 run_weightage_distance, run_weightage_days], 
                                         outputs=weightage_message_output)
-
+            create_plots_button.click(fn=display_gallery, inputs=None, outputs=gallery_output)
 
         with gr.TabItem("View/Edit Data"):
             gr.Markdown("""### View/Edit Data\nSelect a sheet to view and edit data.""")
