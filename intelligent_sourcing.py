@@ -40,19 +40,21 @@ prob, Warehouses, Products, Stock, Priority, Orders, Quantity, Variable = create
 #print(prob.objective)
 
 # Solve LP Problem
-fulfillment_solution, warehouse_stock_status = solve_sourcing_problem(prob, Warehouses, Products, Stock, Priority, Orders, Quantity, Variable)
+status, fulfillment_solution, warehouse_stock_status = solve_sourcing_problem(prob, Warehouses, Products, Stock, Priority, Orders, Quantity, Variable)
 
+if status == "Optimal":
+    # Create a Pandas Excel writer using XlsxWriter as the engine.
+    writer = pd.ExcelWriter(filepath, engine='openpyxl',
+                            mode='a', if_sheet_exists='replace')
 
-# Create a Pandas Excel writer using XlsxWriter as the engine.
-writer = pd.ExcelWriter(filepath, engine='openpyxl',
-                        mode='a', if_sheet_exists='replace')
+    # Write each DataFrame to a different worksheet.
+    fulfillment_solution.to_excel(writer, sheet_name='Fulfillment Solution', index=False)
+    warehouse_stock_status.to_excel(writer, sheet_name='Warehouse Stock Status', index=False)
 
-# Write each DataFrame to a different worksheet.
-fulfillment_solution.to_excel(writer, sheet_name='Fulfillment Solution', index=False)
-warehouse_stock_status.to_excel(writer, sheet_name='Warehouse Stock Status', index=False)
-
-# Close the Pandas Excel writer and output the Excel file.
-writer.close()
+    # Close the Pandas Excel writer and output the Excel file.
+    writer.close()
+else:
+    print("Solution not found - status is - ", status)
 
 
 
