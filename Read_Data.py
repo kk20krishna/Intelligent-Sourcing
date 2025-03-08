@@ -9,14 +9,13 @@ def load_excel_data(filepath):
     filepath (str): Path to the Excel file.
     
     Returns:
-    tuple:
-        - weightage_dict (dict): A dictionary mapping variable names to their corresponding weightages.
-        - priority_df (DataFrame): Data from the 'Priority Data' sheet.
-        - warehouse_df (DataFrame): Data from the 'Warehouse Data' sheet.
-        - order_df (DataFrame): Data from the 'Order Data' sheet.
-        - cost_df (DataFrame): Data from the 'Cost Data' sheet.
-        - distance_df (DataFrame): Data from the 'Distance Data' sheet.
-        - days_df (DataFrame): Data from the 'Days Data' sheet.
+    - weightage_dict (dict): A dictionary mapping variable names to their corresponding weightages.
+    - priority_df (DataFrame): Data from the 'Priority Data' sheet.
+    - warehouse_df (DataFrame): Data from the 'Warehouse Data' sheet.
+    - order_df (DataFrame): Data from the 'Order Data' sheet.
+    - cost_df (DataFrame): Data from the 'Cost Data' sheet.
+    - distance_df (DataFrame): Data from the 'Distance Data' sheet.
+    - days_df (DataFrame): Data from the 'Days Data' sheet.
     """
     # Define the sheet names to be read
     sheets = [
