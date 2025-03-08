@@ -1,6 +1,6 @@
 from pulp import *
 import pandas as pd
-from Read_Data import load_excel_data
+from read_data import load_excel_data
 
 def create_sourcing_problem(weightage_dict, priority_df, warehouse_df, order_df, cost_df, distance_df, days_df):
     """
@@ -17,6 +17,7 @@ def create_sourcing_problem(weightage_dict, priority_df, warehouse_df, order_df,
     
     Returns:
         LpProblem: Linear programming problem formulated for sourcing optimization.
+        Warehouses, Products, Stock, Priority, Orders, Quantity
     """
     def min_max_scale(df, column):
         min_val = df[column].min()
@@ -39,10 +40,10 @@ def create_sourcing_problem(weightage_dict, priority_df, warehouse_df, order_df,
     # Create dictionaries for optimization
     Warehouses = warehouse_df['Warehouse'].tolist()
     Products = warehouse_df.columns[1:]
-    stock = makeDict([Warehouses, Products], warehouse_df.drop('Warehouse', axis=1).values, default=0)
-    priority = makeDict([Warehouses], priority_df.drop('Warehouse', axis=1).values.reshape(len(Warehouses)), default=0)
+    Stock = makeDict([Warehouses, Products], warehouse_df.drop('Warehouse', axis=1).values, default=0)
+    Priority = makeDict([Warehouses], priority_df.drop('Warehouse', axis=1).values.reshape(len(Warehouses)), default=0)
     Orders = order_df['Order'].tolist()
-    quantity = makeDict([Orders, Products], order_df.drop('Order', axis=1).values, default=0)
+    Quantity = makeDict([Orders, Products], order_df.drop('Order', axis=1).values, default=0)
 
     cost_values = cost_df["Cost"].values.reshape(len(Warehouses), len(Orders), len(Products))
     cost = makeDict([Warehouses, Orders, Products], cost_values, default=0)
@@ -55,16 +56,16 @@ def create_sourcing_problem(weightage_dict, priority_df, warehouse_df, order_df,
 
     # Define variables and routes
     routes = [(w, o, s) for w in Warehouses for o in Orders for s in Products]
-    variable = LpVariable.dicts("Route", (Warehouses, Orders, Products), 0, None, LpInteger)
+    Variable = LpVariable.dicts("Route", (Warehouses, Orders, Products), 0, None, LpInteger)
 
     # Create optimization problem
     prob = LpProblem("Sourcing_Problem", LpMinimize)
 
     # Objective function
     prob += lpSum(
-        variable[w][o][p] * (
+        Variable[w][o][p] * (
             (weightage_Cost * cost[w][o][p]) +
-            (weightage_Priority * -priority[w]) +
+            (weightage_Priority * -Priority[w]) +
             (weightage_distance * distance[w][o][p]) +
             (weightage_days * days[w][o][p])
         )
@@ -74,18 +75,18 @@ def create_sourcing_problem(weightage_dict, priority_df, warehouse_df, order_df,
     # Stock Constraints
     for w in Warehouses:
         for p in Products:
-            prob += lpSum([variable[w][o][p] for o in Orders]) <= stock[w][p], f"Stock_Constraint_{p}_in_{w}"
+            prob += lpSum([Variable[w][o][p] for o in Orders]) <= Stock[w][p], f"Stock_Constraint_{p}_in_{w}"
 
     # Order Constraints
     for o in Orders:
         for p in Products:
-            prob += lpSum([variable[w][o][p] for w in Warehouses]) == quantity[o][p], f"Order_Fulfillment_{p}_to_{o}"
+            prob += lpSum([Variable[w][o][p] for w in Warehouses]) == Quantity[o][p], f"Order_Fulfillment_{p}_to_{o}"
 
-    return prob
+    return prob, Warehouses, Products, Stock, Priority, Orders, Quantity, Variable
 
 if __name__ == "__main__":
     filepath = 'Intelligent_Sourcing.xlsx'  # Example file path
-    weightage_dict, priority_df, warehouse_df, order_df, cost_df, distance_df, days_df = load_excel_data(filepath)
+    weightage_dict, priority_df, warehouse_df, order_df, cost_df, distance_df, days_df,  = load_excel_data(filepath)
     
-    prob = create_sourcing_problem(weightage_dict, priority_df, warehouse_df, order_df, cost_df, distance_df, days_df)
+    prob, Warehouses, Products, Stock, Priority, Orders, Quantity, Variable = create_sourcing_problem(weightage_dict, priority_df, warehouse_df, order_df, cost_df, distance_df, days_df)
     print(prob.objective)
