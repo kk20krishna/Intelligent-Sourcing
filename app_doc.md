@@ -1,6 +1,8 @@
 # 📌 Intelligent Sourcing App
 
-Welcome to the **Intelligent Sourcing App**! 🚀 This app helps you optimize sourcing decisions by analyzing warehouse stock, order priorities, costs, and distances. Follow this guide to understand how to use the app effectively.
+Welcome to the **Intelligent Sourcing App**! 
+
+🚀 This app helps you optimize sourcing decisions by analyzing warehouse stock, order priorities, costs, and distances. Follow this guide to understand how to use the app effectively.
 
 ---
 ## 🏆 Created By
