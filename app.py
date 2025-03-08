@@ -90,6 +90,7 @@ def run_optimization():
 with gr.Blocks() as app:
     with gr.Tabs():
         with gr.TabItem("Run Optimization"):
+            gr.Markdown("""### Run Optimization\nAdjust weightage parameters and run optimization.""")
             run_weightage_Cost = gr.Slider(label="Weightage Cost", minimum=1, maximum=10, value=1)
             run_weightage_Priority = gr.Slider(label="Weightage Priority", minimum=1, maximum=10, value=0.8)
             run_weightage_distance = gr.Slider(label="Weightage Distance", minimum=1, maximum=10, value=0.6)
@@ -99,14 +100,24 @@ with gr.Blocks() as app:
             run_optimization_button = gr.Button("Run Optimization")
             run_optimization_message_output = gr.Textbox(label="Status", interactive=False)
 
+            # Button bindings
+            run_optimization_button.click(run_optimization, inputs=[], outputs=run_optimization_message_output)
+            save_Weightage_button.click(save_weightage, inputs=[run_weightage_Cost, run_weightage_Priority, run_weightage_distance, run_weightage_days], outputs=weightage_message_output)
+
 
         with gr.TabItem("View/Edit Data"):
+            gr.Markdown("""### View/Edit Data\nSelect a sheet to view and edit data.""")
             sheet_dropdown = gr.Dropdown(choices=load_default_file(), label="Select Sheet", interactive=True)
             dataframe = gr.Dataframe(label="Edit Data", interactive=True)
             save_button = gr.Button("Save Changes", variant="primary")
             view_data_message_output = gr.Textbox(label="Status Message", interactive=False)
+
+            # Button Bindings
+            sheet_dropdown.change(load_sheet, sheet_dropdown, dataframe)
+            save_button.click(save_changes, [sheet_dropdown, dataframe], view_data_message_output)
         
         with gr.TabItem("Generate Data"):
+            gr.Markdown("""### Generate Data\nEnter parameters to generate new intelligent sourcing data.""")
             generate_button = gr.Button("Generate Data")
             generate_data_message_output = gr.Textbox(label="Status Message", interactive=False)
             num_of_warehouses = gr.Textbox(label="Number of Warehouses", value="4")
@@ -122,19 +133,19 @@ with gr.Blocks() as app:
             range_cost = gr.Textbox(label="Range Cost", value="(1, 300)")
             range_distance = gr.Textbox(label="Range Distance", value="(1, 200)")
             range_days = gr.Textbox(label="Range Days", value="(1, 7)")
+
+            # Button Bindings
+            generate_button.click(generate_data, inputs=[num_of_warehouses, num_of_products, num_of_orders, weightage_Cost, weightage_Priority, weightage_distance, weightage_days, range_priority, range_prod_stock, range_order, range_cost, range_distance, range_days], 
+            outputs=generate_data_message_output)
         
         with gr.TabItem("Upload/Download Data"):
+            gr.Markdown("""### Upload file / download file""")
             file_upload = gr.File(label="Upload Excel File", type="filepath")
             download_button = gr.Button("Download Updated File")
             file_output = gr.File(label="Download Processed File", value=default_file)
-    
-    run_optimization_button.click(run_optimization, inputs=[], outputs=run_optimization_message_output)
-    save_Weightage_button.click(save_weightage, inputs=[run_weightage_Cost, run_weightage_Priority, run_weightage_distance, run_weightage_days], outputs=weightage_message_output)
-    file_upload.upload(upload_file, file_upload, sheet_dropdown)
-    sheet_dropdown.change(load_sheet, sheet_dropdown, dataframe)
-    generate_button.click(generate_data, inputs=[num_of_warehouses, num_of_products, num_of_orders, weightage_Cost, weightage_Priority, weightage_distance, weightage_days, range_priority, range_prod_stock, range_order, range_cost, range_distance, range_days], 
-                          outputs=generate_data_message_output)
-    save_button.click(save_changes, [sheet_dropdown, dataframe], view_data_message_output)
-    download_button.click(download_file, inputs=[], outputs=file_output)
-    
+
+            # Button Bindings
+            file_upload.upload(upload_file, file_upload, sheet_dropdown)
+            download_button.click(download_file, inputs=[], outputs=file_output)
+        
 app.launch()
