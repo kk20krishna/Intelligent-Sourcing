@@ -8,6 +8,7 @@ default_file = "Intelligent_Sourcing.xlsx"
 # Dictionary to store sheet data
 df_sheets = {}
 
+# Function to load the default Excel file
 def load_default_file():
     global df_sheets
     try:
@@ -16,6 +17,7 @@ def load_default_file():
     except Exception as e:
         return ["Error loading default file: " + str(e)]
 
+# Function to upload a new Excel file
 def upload_file(file):
     global df_sheets
     if file is None:
@@ -29,16 +31,20 @@ def upload_file(file):
     df_sheets = pd.read_excel(file_path, sheet_name=None)
     return list(df_sheets.keys())
 
+# Function to load a selected sheet
 def load_sheet(sheet_name):
+    df_sheets = pd.read_excel(default_file, sheet_name=None)
     if sheet_name in df_sheets:
         return df_sheets[sheet_name]
     return pd.DataFrame()
 
+# Function to save edited data back to the sheet
 def save_changes(sheet_name, edited_df):
     global df_sheets
     df_sheets[sheet_name] = edited_df
     return "Changes saved!"
 
+# Function to download the updated Excel file
 def download_file():
     output_path = default_file
     with pd.ExcelWriter(output_path) as writer:
@@ -63,14 +69,36 @@ def generate_data(num_of_warehouses, num_of_products, num_of_orders, weightage_C
                                         range_priority, range_prod_stock, range_order, range_cost, range_distance, range_days)
     return "New data generated successfully!"
 
+# Function to save weightage values
+def save_weightage(weightage_Cost, weightage_Priority, weightage_distance, weightage_days):
+    # Create weightage DataFrame
+    weightage_df = pd.DataFrame({
+        'Variable': ['Cost', 'Priority', 'Distance', 'Days'],
+        'Weightage': [weightage_Cost, weightage_Priority, weightage_distance, weightage_days]
+    })
+    # Write data to Excel
+    with pd.ExcelWriter(default_file, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
+        weightage_df.to_excel(writer, sheet_name='Weightage', index=False)
+    return "Weights saved successfully!"
+
+# Placeholder function for optimization logic
 def run_optimization():
+
     return "Running optimization goes here!!"
 
+# Gradio UI
 with gr.Blocks() as app:
     with gr.Tabs():
         with gr.TabItem("Run Optimization"):
+            run_weightage_Cost = gr.Slider(label="Weightage Cost", minimum=1, maximum=10, value=1)
+            run_weightage_Priority = gr.Slider(label="Weightage Priority", minimum=1, maximum=10, value=0.8)
+            run_weightage_distance = gr.Slider(label="Weightage Distance", minimum=1, maximum=10, value=0.6)
+            run_weightage_days = gr.Slider(label="Weightage Days", minimum=1, maximum=10, value=0.4)
+            save_Weightage_button = gr.Button("Save Weightage")
+            weightage_message_output = gr.Textbox(label="Status", interactive=False)
             run_optimization_button = gr.Button("Run Optimization")
             run_optimization_message_output = gr.Textbox(label="Status", interactive=False)
+
 
         with gr.TabItem("View/Edit Data"):
             sheet_dropdown = gr.Dropdown(choices=load_default_file(), label="Select Sheet", interactive=True)
@@ -100,12 +128,13 @@ with gr.Blocks() as app:
             download_button = gr.Button("Download Updated File")
             file_output = gr.File(label="Download Processed File", value=default_file)
     
+    run_optimization_button.click(run_optimization, inputs=[], outputs=run_optimization_message_output)
+    save_Weightage_button.click(save_weightage, inputs=[run_weightage_Cost, run_weightage_Priority, run_weightage_distance, run_weightage_days], outputs=weightage_message_output)
     file_upload.upload(upload_file, file_upload, sheet_dropdown)
     sheet_dropdown.change(load_sheet, sheet_dropdown, dataframe)
     generate_button.click(generate_data, inputs=[num_of_warehouses, num_of_products, num_of_orders, weightage_Cost, weightage_Priority, weightage_distance, weightage_days, range_priority, range_prod_stock, range_order, range_cost, range_distance, range_days], 
                           outputs=generate_data_message_output)
     save_button.click(save_changes, [sheet_dropdown, dataframe], view_data_message_output)
     download_button.click(download_file, inputs=[], outputs=file_output)
-    run_optimization_button.click(run_optimization, inputs=[], outputs=run_optimization_message_output)
     
 app.launch()
