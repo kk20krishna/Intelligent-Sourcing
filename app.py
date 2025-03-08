@@ -98,13 +98,14 @@ with gr.Blocks() as app:
         with gr.TabItem("Upload/Download Data"):
             file_upload = gr.File(label="Upload Excel File", type="filepath")
             download_button = gr.Button("Download Updated File")
+            file_output = gr.File(label="Download Processed File", value=default_file)
     
     file_upload.upload(upload_file, file_upload, sheet_dropdown)
     sheet_dropdown.change(load_sheet, sheet_dropdown, dataframe)
     generate_button.click(generate_data, inputs=[num_of_warehouses, num_of_products, num_of_orders, weightage_Cost, weightage_Priority, weightage_distance, weightage_days, range_priority, range_prod_stock, range_order, range_cost, range_distance, range_days], 
                           outputs=generate_data_message_output)
     save_button.click(save_changes, [sheet_dropdown, dataframe], view_data_message_output)
-    download_button.click(download_file, inputs=[], outputs=gr.File())
+    download_button.click(download_file, inputs=[], outputs=file_output)
     run_optimization_button.click(run_optimization, inputs=[], outputs=run_optimization_message_output)
     
 app.launch()
