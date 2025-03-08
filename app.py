@@ -1,6 +1,9 @@
 import gradio as gr
 import pandas as pd
 from generate_data import generate_intelligent_sourcing_excel
+from read_data import load_excel_data
+from create_optimization_problem import create_sourcing_problem
+from solve_optimization_problem import solve_sourcing_problem
 
 # Default file name
 default_file = "Intelligent_Sourcing.xlsx"
@@ -41,7 +44,10 @@ def load_sheet(sheet_name):
 # Function to save edited data back to the sheet
 def save_changes(sheet_name, edited_df):
     global df_sheets
-    df_sheets[sheet_name] = edited_df
+    # Write data to Excel
+    with pd.ExcelWriter(default_file, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
+        edited_df.to_excel(writer, sheet_name=sheet_name, index=False)
+    df_sheets = pd.read_excel(default_file, sheet_name=None)
     return "Changes saved!"
 
 # Function to download the updated Excel file
@@ -81,10 +87,36 @@ def save_weightage(weightage_Cost, weightage_Priority, weightage_distance, weigh
         weightage_df.to_excel(writer, sheet_name='Weightage', index=False)
     return "Weights saved successfully!"
 
-# Placeholder function for optimization logic
+# Run optimization problem
 def run_optimization():
+    # Read Data
+    weightage_dict, priority_df, warehouse_df, order_df, cost_df, distance_df, days_df = load_excel_data(default_file)
 
-    return "Running optimization goes here!!"
+    # Create LP Problem
+    prob, Warehouses, Products, Stock, Priority, Orders, Quantity, Variable = create_sourcing_problem(weightage_dict, priority_df, 
+                                                                                                      warehouse_df, order_df, cost_df, distance_df, days_df)
+    #print(prob.objective)
+
+    # Solve LP Problem
+    status, fulfillment_solution, warehouse_stock_status = solve_sourcing_problem(prob, Warehouses, Products, Stock,
+                                                                                   Priority, Orders, Quantity, Variable)
+
+    if status == "Optimal":
+        # Create a Pandas Excel writer using XlsxWriter as the engine.
+        writer = pd.ExcelWriter(default_file, engine='openpyxl',
+                                mode='a', if_sheet_exists='replace')
+
+        # Write each DataFrame to a different worksheet.
+        fulfillment_solution.to_excel(writer, sheet_name='Fulfillment Solution', index=False)
+        warehouse_stock_status.to_excel(writer, sheet_name='Warehouse Stock Status', index=False)
+
+        # Close the Pandas Excel writer and output the Excel file.
+        writer.close()
+        return f'Optimization Status: {status}', fulfillment_solution, warehouse_stock_status
+    else:
+        return f'Solution not found!!!! - status is - {status}', gr.update(visible=False), gr.update(visible=False)
+
+
 
 # Gradio UI
 with gr.Blocks() as app:
@@ -99,16 +131,27 @@ with gr.Blocks() as app:
             weightage_message_output = gr.Textbox(label="Status", interactive=False)
             run_optimization_button = gr.Button("Run Optimization")
             run_optimization_message_output = gr.Textbox(label="Status", interactive=False)
+            with gr.Tabs():
+                with gr.TabItem("Results: Fulfillment Solution"):
+                    fulfillment_dataframe = gr.Dataframe(label="Fulfillment Solution")
+                with gr.TabItem("Results: Warehouse Stock Status"):
+                    warehouse_stock_dataframe = gr.Dataframe(label="Warehouse Stock Status")
 
             # Button bindings
-            run_optimization_button.click(run_optimization, inputs=[], outputs=run_optimization_message_output)
-            save_Weightage_button.click(save_weightage, inputs=[run_weightage_Cost, run_weightage_Priority, run_weightage_distance, run_weightage_days], outputs=weightage_message_output)
+            run_optimization_button.click(run_optimization, inputs=[], 
+                                          outputs=[run_optimization_message_output, 
+                                                   fulfillment_dataframe, 
+                                                   warehouse_stock_dataframe])
+            save_Weightage_button.click(save_weightage, 
+                                        inputs=[run_weightage_Cost, run_weightage_Priority, 
+                                                run_weightage_distance, run_weightage_days], 
+                                        outputs=weightage_message_output)
 
 
         with gr.TabItem("View/Edit Data"):
             gr.Markdown("""### View/Edit Data\nSelect a sheet to view and edit data.""")
             sheet_dropdown = gr.Dropdown(choices=load_default_file(), label="Select Sheet", interactive=True)
-            dataframe = gr.Dataframe(label="Edit Data", interactive=True)
+            dataframe = gr.Dataframe(load_sheet('Weightage'), label="Edit Data", interactive=True)
             save_button = gr.Button("Save Changes", variant="primary")
             view_data_message_output = gr.Textbox(label="Status Message", interactive=False)
 
@@ -135,7 +178,10 @@ with gr.Blocks() as app:
             range_days = gr.Textbox(label="Range Days", value="(1, 7)")
 
             # Button Bindings
-            generate_button.click(generate_data, inputs=[num_of_warehouses, num_of_products, num_of_orders, weightage_Cost, weightage_Priority, weightage_distance, weightage_days, range_priority, range_prod_stock, range_order, range_cost, range_distance, range_days], 
+            generate_button.click(generate_data, 
+                                  inputs=[num_of_warehouses, num_of_products, num_of_orders, 
+                                          weightage_Cost, weightage_Priority, weightage_distance, weightage_days, 
+                                          range_priority, range_prod_stock, range_order, range_cost, range_distance, range_days], 
             outputs=generate_data_message_output)
         
         with gr.TabItem("Upload/Download Data"):

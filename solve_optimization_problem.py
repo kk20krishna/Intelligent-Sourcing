@@ -18,7 +18,8 @@ def solve_sourcing_problem(prob, Warehouses, Products, Stock, Priority, Orders, 
     Variable (dict): Dictionary of PuLP variables representing the decision variables.
 
     Returns:
-    tuple: A tuple containing two DataFrames:
+    tuple: A tuple containing a string and two DataFrames:
+        - LpStatus[prob.status] (str): The status of the solution.
         - fulfillment_solution: Contains details of supply quantities for each order from each warehouse.
         - warehouse_stock_status: Contains initial stock, supplied stock, and remaining stock levels.
     """
@@ -58,7 +59,7 @@ def solve_sourcing_problem(prob, Warehouses, Products, Stock, Priority, Orders, 
             })
     warehouse_stock_status = pd.DataFrame(warehouse_stock_status)
 
-    return fulfillment_solution, warehouse_stock_status
+    return LpStatus[prob.status], fulfillment_solution, warehouse_stock_status
 
 
 
@@ -73,7 +74,7 @@ if __name__ == "__main__":
     #print(prob.objective)
 
     # Solve LP Problem
-    fulfillment_solution, warehouse_stock_status = solve_sourcing_problem(prob, Warehouses, Products, Stock, Priority, Orders, Quantity, Variable)
+    status, fulfillment_solution, warehouse_stock_status = solve_sourcing_problem(prob, Warehouses, Products, Stock, Priority, Orders, Quantity, Variable)
 
     print(fulfillment_solution)
     print(warehouse_stock_status)
