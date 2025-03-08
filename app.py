@@ -124,7 +124,7 @@ def run_optimization():
 
 
 # Gradio UI
-with gr.Blocks() as app:
+with gr.Blocks(theme=gr.themes.Soft()) as app:
     gr.Markdown("""# Intelligent Sourcing """)
     with gr.Tabs():
         
