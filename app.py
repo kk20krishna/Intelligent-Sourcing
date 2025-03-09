@@ -121,8 +121,8 @@ def run_optimization():
         writer.close()
 
         create_sourcing_graph(fulfillment_solution)
-        # Get all image files in the 'plots' folder
-        plot_images = [os.path.join("plots", filename) for filename in os.listdir("plots") if filename.endswith(('.png', '.jpg', '.jpeg'))]
+        # Get all image files in the '/tmp/plots' folder
+        plot_images = [os.path.join("/tmp/plots", filename) for filename in os.listdir("/tmp/plots") if filename.endswith(('.png', '.jpg', '.jpeg'))]
 
         return f'Optimization Status: {status}', fulfillment_solution, warehouse_stock_status, plot_images
     else:
