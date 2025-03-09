@@ -59,15 +59,15 @@ def create_sourcing_problem(weightage_dict, priority_df, warehouse_df, order_df,
     Variable = LpVariable.dicts("Route", (Warehouses, Orders, Products), 0, None, LpInteger)
 
     # Create optimization problem
-    prob = LpProblem("Sourcing_Problem", LpMinimize)
+    prob = LpProblem("Sourcing_Problem", LpMaximize)
 
     # Objective function
     prob += lpSum(
         Variable[w][o][p] * (
-            (weightage_Cost * cost[w][o][p]) +
+            (weightage_Cost * -cost[w][o][p]) +
             (weightage_Priority * -Priority[w]) +
-            (weightage_distance * distance[w][o][p]) +
-            (weightage_days * days[w][o][p])
+            (weightage_distance * -distance[w][o][p]) +
+            (weightage_days * -days[w][o][p])
         )
         for (w, o, p) in routes
     ), "Sum_of_Costs"
