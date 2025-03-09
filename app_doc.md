@@ -12,7 +12,7 @@ Follow this guide to understand how to use the app effectively.
 
 ---
 ## 🏆 Created By
-- **Business Knowledge, Concept and Domain Expertise**: Achyuthanand.S & Christofer.B
+- **Business Knowledge, Concept and Domain Expertise**: Achyuthanand.S, Christopher.B, Shafeeque.M and Soumyajeet.M
 
 
 - **App Design, Development and Implementation**: Krishna Kumar.S
