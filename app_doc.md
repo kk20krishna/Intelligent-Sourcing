@@ -13,7 +13,12 @@ Follow this guide to understand how to use the app effectively.
 ---
 ## 🏆 Created By
 - **Business Knowledge, Concept and Domain Expertise**: Achyuthanand.S & Christofer.B
+
+
 - **App Design, Development and Implementation**: Krishna Kumar.S
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin)](https://www.linkedin.com/in/krishna-kumar-sankaran-kutty/)
+[![Website](https://img.shields.io/badge/Website-Krishna_Kumar_S-green?logo=netlify)](https://krishnakumars.netlify.app/)  
+
 ---
 
 ## 🏠 App Overview
