@@ -8,13 +8,11 @@ from create_optimization_problem import create_sourcing_problem
 from solve_optimization_problem import solve_sourcing_problem
 from read_data import load_excel_data
 
-def create_sourcing_graph(fulfillment_solution, plot_folder="plots"):
+def create_sourcing_graph(fulfillment_solution, plot_folder="/tmp/plots"):
 
-
-    # Delete all files in the 'plots' folder
-    for filename in os.listdir(plot_folder):
-        file_path = os.path.join(plot_folder, filename)
-        if os.path.isfile(file_path):  # Ensure it's a file, not a directory
+    if os.path.exists(plot_folder) and os.path.isdir(plot_folder):  # Check if folder exists
+        for filename in os.listdir(plot_folder):
+            file_path = os.path.join(plot_folder, filename)
             os.remove(file_path)
     
     # Create a directed graph
@@ -93,7 +91,7 @@ def create_sourcing_graph(fulfillment_solution, plot_folder="plots"):
 
 def display_gallery():
     # Load all the images in the 'plots' folder for display
-    plot_folder = "plots"
+    plot_folder = "/tmp/plots"
     image_paths = [os.path.join(plot_folder, f) for f in os.listdir(plot_folder) if f.endswith(".png")]
     return image_paths
 
