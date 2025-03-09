@@ -80,7 +80,7 @@ def create_sourcing_problem(weightage_dict, priority_df, warehouse_df, order_df,
     # Order Constraints
     for o in Orders:
         for p in Products:
-            prob += lpSum([Variable[w][o][p] for w in Warehouses]) == Quantity[o][p], f"Order_Fulfillment_{p}_to_{o}"
+            prob += lpSum([Variable[w][o][p] for w in Warehouses]) <= Quantity[o][p], f"Order_Fulfillment_{p}_to_{o}"
 
     return prob, Warehouses, Products, Stock, Priority, Orders, Quantity, Variable
 
