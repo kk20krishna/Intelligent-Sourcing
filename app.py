@@ -138,10 +138,10 @@ with gr.Blocks(theme=gr.themes.Soft()) as app:
 
         with gr.TabItem("Run Optimization"):
             gr.Markdown("""### Run Optimization\nAdjust weightage parameters and run optimization.""")
-            run_weightage_Cost = gr.Slider(label="Weightage Cost", minimum=1, maximum=10, value=5)
-            run_weightage_Priority = gr.Slider(label="Weightage Priority", minimum=1, maximum=10, value=5)
-            run_weightage_distance = gr.Slider(label="Weightage Distance", minimum=1, maximum=10, value=5)
-            run_weightage_days = gr.Slider(label="Weightage Days", minimum=1, maximum=10, value=5)
+            run_weightage_Cost = gr.Slider(label="Weightage Cost", minimum=0, maximum=1, value=0.25)
+            run_weightage_Priority = gr.Slider(label="Weightage Priority", minimum=0, maximum=1, value=0.25)
+            run_weightage_distance = gr.Slider(label="Weightage Distance", minimum=0, maximum=1, value=0.25)
+            run_weightage_days = gr.Slider(label="Weightage Days", minimum=0, maximum=1, value=0.25)
             save_Weightage_button = gr.Button("Save Weightage")
             weightage_message_output = gr.Textbox(label="Status", interactive=False)
             run_optimization_button = gr.Button("Run Optimization")
