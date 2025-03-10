@@ -1,0 +1,29 @@
+# Ignore all __pycache__ folders
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore all Excel files
+*.xlsx
+*.xls
+
+# Ignore temporary and log files
+*.log
+*.tmp
+.DS_Store  # macOS system file
+Thumbs.db   # Windows system file
+
+# Ignore virtual environments
+venv/
+.env
+
+# Ignore compiled code (Python bytecode)
+*.pyo
+*.pyc
+*.pyd
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore OS-generated files
+*.swp
