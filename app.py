@@ -128,6 +128,26 @@ def run_optimization():
     else:
         return f'Solution not found!!!! - status is - {status}', gr.update(visible=False), gr.update(visible=False), gr.update(visible=False)
 
+# Generate excel sheet on app startup
+# Define parameters for execution
+output_filename = "Intelligent_Sourcing.xlsx"
+num_of_warehouses = 4
+num_of_products = 10
+num_of_orders = 4
+weightage_Cost = 1
+weightage_Priority = 0.75
+weightage_distance = 0.5
+weightage_days = 0.25
+range_priority = (1, 10)
+range_prod_stock = (1, 100)
+range_order = (1, 10)
+range_cost = (1, 300)
+range_distance = (1, 200)
+range_days = (1, 7)
+# Run function
+generate_intelligent_sourcing_excel(output_filename, num_of_warehouses, num_of_products, num_of_orders, weightage_Cost, weightage_Priority,
+                                    weightage_distance, weightage_days, range_priority, range_prod_stock, range_order, range_cost, range_distance, range_days)
+
 # Gradio UI
 with gr.Blocks(theme=gr.themes.Soft()) as app:
     gr.Markdown("""# Intelligent Sourcing """)
