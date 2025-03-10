@@ -186,7 +186,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as app:
             weightage_Cost = gr.Slider(label="Weightage Cost", minimum=0, maximum=1, value=0.5, step=0.25, interactive=True)
             weightage_Priority = gr.Slider(label="Weightage Priority", minimum=0, maximum=1, value=0.5, step=0.25, interactive=True)
             weightage_distance = gr.Slider(label="Weightage Distance", minimum=0, maximum=1, value=0.5, step=0.25, interactive=True)
-            weightage_days = gr.Slider(label="Weightage Days", minimum=1, maximum=0, value=0.5, interactive=True)
+            weightage_days = gr.Slider(label="Weightage Days", minimum=0, maximum=1, value=0.5, interactive=True)
             range_priority = gr.Textbox(label="Range Priority", value="(1, 10)")
             range_prod_stock = gr.Textbox(label="Range Product Stock", value="(1, 100)")
             range_order = gr.Textbox(label="Range Order", value="(1, 10)")
