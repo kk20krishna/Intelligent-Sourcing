@@ -152,8 +152,11 @@ generate_intelligent_sourcing_excel(output_filename, num_of_warehouses, num_of_p
 with gr.Blocks(theme=gr.themes.Soft()) as app:
     gr.Markdown("""# Intelligent Sourcing """)
     with gr.Tabs():
+
+        with gr.TabItem("About this App")
+            gr.Markdown(https://raw.githubusercontent.com/kk20krishna/Intelligent-Sourcing/refs/heads/main/README.md)
         
-        with gr.TabItem("📖 About This App"):
+        with gr.TabItem("📖 How to use this App"):
             gr.Markdown(read_markdown_file())
 
         with gr.TabItem("Run Optimization"):
