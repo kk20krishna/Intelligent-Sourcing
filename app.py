@@ -14,8 +14,8 @@ default_file = "Intelligent_Sourcing.xlsx"
 df_sheets = {}
 
 # Function to read the Markdown file
-def read_markdown_file():
-    with open("app_doc.md", "r", encoding="utf-8") as f:
+def read_markdown_file(file):
+    with open(file, "r", encoding="utf-8") as f:
         return f.read()
 
 # Function to load the default Excel file
@@ -154,10 +154,10 @@ with gr.Blocks(theme=gr.themes.Soft()) as app:
     with gr.Tabs():
 
         with gr.TabItem("About this Appkkk"):
-            gr.Markdown("https://raw.githubusercontent.com/kk20krishna/Intelligent-Sourcing/refs/heads/main/README.md")
+            gr.Markdown(read_markdown_file("https://raw.githubusercontent.com/kk20krishna/Intelligent-Sourcing/refs/heads/main/README.md"))
         
         with gr.TabItem("📖 How to use this App"):
-            gr.Markdown(read_markdown_file())
+            gr.Markdown(read_markdown_file("app_doc.md"))
 
         with gr.TabItem("Run Optimization"):
             gr.Markdown("""### Run Optimization\nAdjust weightage parameters and run optimization.""")
