@@ -21,7 +21,7 @@ def read_markdown_file_github(url):
         readme_content = response.text
     else:
         readme_content = "Failed to load {url}"
-    return readme_content
+    return readme_content[227:]
 
 # Function to read the Markdown file
 def read_markdown_file(file):
