@@ -6,12 +6,22 @@ from create_optimization_problem import create_sourcing_problem
 from solve_optimization_problem import solve_sourcing_problem
 from network_diagram import create_sourcing_graph, display_gallery
 import os
+import requests
 
 # Default file name
 default_file = "Intelligent_Sourcing.xlsx"
 
 # Dictionary to store sheet data
 df_sheets = {}
+
+# Function to read the Markdown file from GitHub
+def read_markdown_file_github(url):
+    response = requests.get(url)
+    if response.status_code == 200:
+        readme_content = response.text
+    else:
+        readme_content = "Failed to load {url}"
+    return readme_content
 
 # Function to read the Markdown file
 def read_markdown_file(file):
@@ -153,8 +163,8 @@ with gr.Blocks(theme=gr.themes.Soft()) as app:
     gr.Markdown("""# Intelligent Sourcing """)
     with gr.Tabs():
 
-        with gr.TabItem("About this Appkkk"):
-            gr.Markdown(read_markdown_file("https://raw.githubusercontent.com/kk20krishna/Intelligent-Sourcing/refs/heads/main/README.md"))
+        with gr.TabItem("About this App"):
+            gr.Markdown(read_markdown_file_github("https://raw.githubusercontent.com/kk20krishna/Intelligent-Sourcing/refs/heads/main/README.md"))
         
         with gr.TabItem("📖 How to use this App"):
             gr.Markdown(read_markdown_file("app_doc.md"))
