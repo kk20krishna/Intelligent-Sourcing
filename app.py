@@ -153,7 +153,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as app:
     gr.Markdown("""# Intelligent Sourcing """)
     with gr.Tabs():
 
-        with gr.TabItem("About this App")
+        with gr.TabItem("About this App"):
             gr.Markdown(https://raw.githubusercontent.com/kk20krishna/Intelligent-Sourcing/refs/heads/main/README.md)
         
         with gr.TabItem("📖 How to use this App"):
