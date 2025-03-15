@@ -1,7 +1,7 @@
 # 🏠 App Overview
 The Intelligent Sourcing App consists of multiple tabs, each with a specific function:
 
-  1. **Run Optimization** 🔍 - Adjust weightage values and run the optimization process. The app helps solve large and complex sourcing problems by optimizing stock allocation across multiple warehouses, reducing costs, and improving delivery efficiency.
+  1. **Run Optimization** 🔍 - Adjust weightage values and run the optimization process. The app helps solve large and complex sourcing problems by optimizing stock allocation across multiple fulfilment locations, reducing costs, and improving delivery efficiency.
   2. **View/Edit Data** 📑 - View and modify data sheets to fine-tune sourcing parameters.
   3. **Generate Data** 🎲 - Create a new dataset with custom parameters. This option generates artificial data for beta testing and evaluating the app's functionality before using real-world data.
   4. **Upload/Download Data** ⬆️⬇️ - Upload new files to update the dataset and download processed results after optimization.
@@ -14,7 +14,7 @@ The Intelligent Sourcing App consists of multiple tabs, each with a specific fun
 - Adjust the weightage sliders for **Cost, Priority, Distance, and Days**.
 - Click **Save Weightage** to store your preferences.
 - Click **Run Optimization** to generate sourcing recommendations.
-- View results in the **Fulfillment Solution**,  **Warehouse Stock Status** and **Plots** tabs.
+- View results in the **Fulfillment Solution**,  **fulfilment location Stock Status** and **Plots** tabs.
 - The optimization results are automatically updated in the Excel file and can be downloaded using the **Upload/Download Data** tab.
 
 ## 2️⃣ View/Edit Data 📝
@@ -23,7 +23,7 @@ The Intelligent Sourcing App consists of multiple tabs, each with a specific fun
 - Click **Save Changes** to update the Excel file.
 
 ## 3️⃣ Generate Data 🏗️
-- Enter the number of warehouses, products, and orders.
+- Enter the number of fulfilment locations, products, and orders.
 - Adjust the weightage values and specify ranges for cost, distance, priority, etc.
 - Click **Generate Data** to create a new intelligent sourcing dataset.
 - This feature is primarily used for testing and validating the app before applying it to actual sourcing data.

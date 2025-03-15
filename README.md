@@ -14,7 +14,7 @@ Check out the configuration reference at https://huggingface.co/docs/hub/spaces-
 # 📌 Intelligent Sourcing App
 
 Welcome to the **Intelligent Sourcing App**! 🚀
-This application optimizes sourcing decisions by analyzing warehouse stock, order priorities, costs, and distances. It uses **Linear Optimization** to efficiently allocate stock while minimizing cost and maximizing efficiency.
+This application optimizes sourcing decisions by analyzing fulfilment location stock, order priorities, costs, and distances. It uses **Linear Optimization** to efficiently allocate stock while minimizing cost and maximizing efficiency.
 
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Intelligent_Sourcing-blue?logo=github)](https://github.com/kk20krishna/Intelligent-Sourcing)
 [![HF Space](https://img.shields.io/badge/HuggingFace-Intelligent_Sourcing_App-orange?logo=huggingface)](https://huggingface.co/spaces/kk20krishna/Intelligent-Sourcing)
@@ -27,12 +27,12 @@ This application optimizes sourcing decisions by analyzing warehouse stock, orde
 | **App Design, Development, and Implementation** | Krishna Kumar.S  |
 ---
 ## 🚀 Problem Statement
-Efficient sourcing is critical for businesses with multiple warehouses. This app addresses the challenge of **allocating stock optimally** while considering:
-- **Warehouse stock levels**
-- **Warehouse priorities**
+Efficient sourcing is critical for businesses with multiple fulfilment locations. This app addresses the challenge of identifying **optimal fulfilment locations** while considering parameters like:
+- **fulfilment location stock levels**
+- **fulfilment location priorities**
 - **Order Quantity**
 - **Costs associated with sourcing**
-- **Distance between warehouses and delivery points**
+- **Distance between fulfilment locations and delivery points**
 - **Expected delivery in days**
 
 By balancing these factors, the app provides an optimal fulfillment solution.
@@ -43,9 +43,9 @@ The application uses **Linear Optimization** (via **PuLP**) to maximize the sour
 
 ### 🛠️ Summary of Linear Optimization Model
 - **Objective Function**: Maximize the weighted sum of **priority fulfillment while minimizing cost, distance, and delivery time**.
-- **Decision Variables**: Determines the amount of stock to be allocated from each warehouse to fulfill each order.
+- **Decision Variables**: Determines the amount of stock to be allocated from each fulfilment location to fulfill each order.
 - **Constraints**:
-  - Warehouse stock limits.
+  - fulfilment location stock limits.
   - Fulfillment of order quantities.
   - Trade-offs between cost, distance, priority, and delivery time.
 ---
@@ -60,11 +60,11 @@ $$
 where:
 - **Priority Weightage**: Ensuring high-priority orders are fulfilled first.
 - **Cost Weightage**: Reducing overall procurement and transportation costs.
-- **Distance Weightage**: Minimizing the distance between warehouses and order locations to optimize logistics.
+- **Distance Weightage**: Minimizing the distance between fulfilment locations and order locations to optimize logistics.
 - **Days Weightage**: Reducing delivery time while balancing cost efficiency.
 
 ### **Constraints**
-1. **Stock Limitation**: Each warehouse cannot supply more than its available stock.
+1. **Stock Limitation**: Each fulfilment location cannot supply more than its available stock.
 2. **Order Fulfillment**: Each order must be completely fulfilled without partial deliveries.
 3. **Trade-offs**: Adjusting weightages impacts sourcing decisions (e.g., prioritizing lower costs vs. faster delivery).
 4. **Non-Negativity Constraint**: The allocated supply quantity must always be non-negative.
@@ -82,7 +82,7 @@ Users can tweak these values through an **interactive UI** and observe changes i
 ---
 ## 📊 Code Structure & Control Flow
 This app consists of multiple Python modules, each handling a specific function:
-- **generate_data.py**: Generates synthetic warehouse, order, and cost data.
+- **generate_data.py**: Generates synthetic fulfilment location, order, and cost data.
 - **read_data.py**: Loads Excel data into Pandas DataFrames for processing.
 - **create_optimization_problem.py**: Constructs the **Linear Programming** model using PuLP.
 - **solve_optimization_problem.py**: Solves the LP problem and generates fulfillment solutions.
@@ -91,7 +91,7 @@ This app consists of multiple Python modules, each handling a specific function:
 
 ### **Optimization Control Flow**
 ```markdown
-Start → Load Data (`read_data.py`) → Adjust Weightages (User Input) → Create Optimization Model (`create_optimization_problem.py`) → Solve Optimization (`solve_optimization_problem.py`) → Generate Results (Warehouse Fulfillment, Costs, Delivery Time) → Visualize Results (`network_diagram.py`) → UI Interaction (`app.py`) → End
+Start → Load Data (`read_data.py`) → Adjust Weightages (User Input) → Create Optimization Model (`create_optimization_problem.py`) → Solve Optimization (`solve_optimization_problem.py`) → Generate Results (fulfilment location Fulfillment, Costs, Delivery Time) → Visualize Results (`network_diagram.py`) → UI Interaction (`app.py`) → End
 ```
 1. **Data Loading**: Reads Excel input files using read_data.py.
 2. **Weightage Adjustment**: Users modify cost, priority, distance, and time weightages.
